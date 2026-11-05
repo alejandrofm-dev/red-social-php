@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Crear nuevo post</h1>
+
+    <form action="index.php?c=post&create" method="POST" enctype="multipart/form-data">
+        <label for="caption">Descripción:</label>
+        <input type="text" id="caption" name="caption">
+
+        <label for="image">Cargar imagen:</label>
+        <input type="file" id="image" name="image">
+
+        <button type="submit">Crear</button>
+    </form>
+
+</body>
+
+</html>

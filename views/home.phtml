@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Network</title>
+</head>
+
+<body>
+    <h1>Social Network</h1>
+    <?php
+    if (isset($_SESSION['user'])) {
+        ?>
+        <div class="container">
+            <span> <?php echo 'Bienvenido ' . $_SESSION['user']->getUsername(); ?></span>
+            <button class="btn">
+                <a href="index.php?c=user&logout">Logout</a>
+            </button>
+        </div>
+        <div class="container">
+            <button class="btn">
+                <a href="index.php?c=post&new">Crear post</a>
+            </button>
+        </div>
+        <div class="container">
+            <div class="feed">
+                <?php foreach (PostRepository::getPosts() as $post): ?>
+                    <div class="post">
+                        <div class="post-header">
+                            <h3><?php echo $post->getAuthor()->getUsername(); ?></h3>
+                        </div>
+                        <img src="<?php echo $post->getImageUrl(); ?>" alt="">
+                        <div class="post-actions">
+                            <button class="like-btn" data-post-id="<?php echo $post->getId(); ?>">
+                                <?php echo $post->getLikes()->getUserHasLiked() ? 'Unlike' : 'Like'; ?>
+                            </button>
+                        </div>
+                        <p><?php echo $post->getLikes()->getTotalLikes(); ?> likes</p>
+                        <div class="post-comments">
+                            <?php foreach ($post->getComments() as $comment): ?>
+                                <p>
+                                    <strong><?php echo $comment->getAuthor()->getUsername(); ?></strong>
+                                    <?php echo $comment->getComment(); ?>
+                                </p>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <?php
+    } else {
+        ?>
+        <div class="container">
+            <div>
+                <button>
+                    <a href="index.php?login">Login</a>
+                </button>
+            </div>
+            <div>
+                <button>
+                    <a href="index.php?register">Registrarse</a>
+                </button>
+            </div>
+
+        </div>
+        <?php
+    }
+    ?>
+</body>
+
+</html>
