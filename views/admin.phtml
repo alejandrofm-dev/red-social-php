@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modo administrador</title>
+</head>
+
+<body>
+    <h1>Modo administrador</h1>
+    <p>
+        Sesión: <?php echo htmlspecialchars($_SESSION['user']->getUsername()); ?>
+        (<?php echo htmlspecialchars($_SESSION['user']->getRol()); ?>)
+        — <a href="index.php">Volver al inicio</a>
+    </p>
+
+    <h2>Usuarios</h2>
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>ID</th>
+            <th>Usuario</th>
+            <th>Email</th>
+            <th>Rol</th>
+            <th>Acciones</th>
+        </tr>
+        <?php foreach (UserRepository::getAllUsers() as $u): ?>
+            <?php
+            $canDelete = $u->getId() != $currentUser->getId()
+                && !$u->isOwner()
+                && ($u->getRol() === 'user' || $currentUser->isOwner());
+            ?>
+            <tr>
+                <td><?php echo $u->getId(); ?></td>
+                <td><?php echo htmlspecialchars($u->getUsername()); ?></td>
+                <td><?php echo htmlspecialchars($u->getEmail()); ?></td>
+                <td><?php echo htmlspecialchars($u->getRol()); ?></td>
+                <td>
+                    <?php if ($canDelete): ?>
+                        <form action="index.php?c=admin&deleteUser" method="post"
+                            onsubmit="return confirm('¿Eliminar usuario y todo su contenido?');">
+                            <input type="hidden" name="id" value="<?php echo $u->getId(); ?>">
+                            <button type="submit">Eliminar</button>
+                        </form>
+                    <?php endif; ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+
+    <h2>Posts y comentarios</h2>
+    <?php foreach (PostRepository::getPosts() as $post): ?>
+        <div class="post">
+            <hr>
+            <h3>#<?php echo $post->getId(); ?> — <?php echo htmlspecialchars($post->getAuthor()->getUsername()); ?></h3>
+            <img width="150px" src="<?php echo FileHelper::getImageUrlByName($post->getImageUrl()); ?>" alt="">
+            <p><?php echo htmlspecialchars($post->getCaption()); ?></p>
+            <form action="index.php?c=admin&deletePost" method="post"
+                onsubmit="return confirm('¿Eliminar este post?');">
+                <input type="hidden" name="id" value="<?php echo $post->getId(); ?>">
+                <button type="submit">Eliminar post</button>
+            </form>
+
+            <?php foreach ($post->getComments() as $comment): ?>
+                <form action="index.php?c=admin&deleteComment" method="post"
+                    onsubmit="return confirm('¿Eliminar este comentario?');">
+                    <strong><?php echo htmlspecialchars($comment->getAuthor()->getUsername()); ?></strong>
+                    <?php echo htmlspecialchars($comment->getComment()); ?>
+                    <input type="hidden" name="id" value="<?php echo $comment->getId(); ?>">
+                    <button type="submit">Eliminar comentario</button>
+                </form>
+            <?php endforeach; ?>
+        </div>
+    <?php endforeach; ?>
+</body>
+
+</html>

@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS users(
     username VARCHAR(50) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    rol ENUM('admin','user') NOT NULL DEFAULT 'user',
+    rol ENUM('owner','admin','user') NOT NULL DEFAULT 'user',
     create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -69,4 +69,5 @@ CREATE TABLE IF NOT EXISTS comment_likes(
 
 INSERT INTO users (username, email, password, rol) VALUES 
 ('admin', 'admin@gmail.com', '21232f297a57a5a743894a0e4a801fc3', 'admin'),
-('alex', 'alex@gmail.com', '534b44a19bf18d20b71ecc4eb77c572f', 'user');
+('alex', 'alex@gmail.com', '534b44a19bf18d20b71ecc4eb77c572f', 'user'),
+('owner', 'owner@gmail.com', '72122ce96bfec66e2396d2e25225d70a', 'owner');

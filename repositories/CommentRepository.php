@@ -15,6 +15,14 @@ class CommentRepository
         return $comments;
     }
 
+    public static function deleteComment(int $id): void
+    {
+        $db = DB::connect();
+        $stmt = $db->prepare("DELETE FROM comments WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+    }
+
     public static function addComment(int $postId, int $userId, string $comment): void
     {
         $db = DB::connect();

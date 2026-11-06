@@ -24,6 +24,14 @@ class PostRepository
         return $stmt->insert_id;
     }
 
+    public static function deletePost(int $id): void
+    {
+        $db = DB::connect();
+        $stmt = $db->prepare("DELETE FROM posts WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+    }
+
     public static function updateImage($id, $image)
     {
         $db = DB::connect();

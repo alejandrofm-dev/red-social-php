@@ -22,6 +22,11 @@
             <button class="btn">
                 <a href="index.php?c=post&new">Crear post</a>
             </button>
+            <?php if ($_SESSION['user']->hasAdminAccess()): ?>
+                <button class="btn">
+                    <a href="index.php?c=admin">Modo administrador</a>
+                </button>
+            <?php endif; ?>
         </div>
         <div class="container">
             <div class="feed">

@@ -34,4 +34,20 @@ class User
     {
         return $this->rol;
     }
+
+    public function isOwner(): bool
+    {
+        return $this->rol === 'owner';
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->rol === 'admin';
+    }
+
+    // acceso al modo administrador: solo admin y owner
+    public function hasAdminAccess(): bool
+    {
+        return $this->isOwner() || $this->isAdmin();
+    }
 }
