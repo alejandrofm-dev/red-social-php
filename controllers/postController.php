@@ -15,4 +15,6 @@ if (isset($_GET['create'])) {
 
         PostRepository::updateImage($newPostId, $destiny);
     }
+    header("Location:index.php");
+    exit;
 }

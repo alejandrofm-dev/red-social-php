@@ -27,7 +27,7 @@ class PostRepository
     public static function updateImage($id, $image)
     {
         $db = DB::connect();
-        $stmt = $db->prepare("UPDATE posts VALUES image_url=? WHERE id=?");
+        $stmt = $db->prepare("UPDATE posts SET image_url=? WHERE id=?");
         $stmt->bind_param("si", $image, $id);
         $stmt->execute();
         return $stmt->affected_rows;

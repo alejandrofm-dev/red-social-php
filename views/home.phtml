@@ -27,24 +27,44 @@
             <div class="feed">
                 <?php foreach (PostRepository::getPosts() as $post): ?>
                     <div class="post">
+                        <hr>
                         <div class="post-header">
                             <h3><?php echo $post->getAuthor()->getUsername(); ?></h3>
                         </div>
-                        <img src="<?php echo $post->getImageUrl(); ?>" alt="">
+                        <img width="250px" src="<?php echo FileHelper::getImageUrlByName($post->getImageUrl()); ?>" alt="">
+                        <div>
+                            <p>
+                                <?php echo $post->getCaption(); ?>
+                            </p>
+                        </div>
                         <div class="post-actions">
-                            <button class="like-btn" data-post-id="<?php echo $post->getId(); ?>">
-                                <?php echo $post->getLikes()->getUserHasLiked() ? 'Unlike' : 'Like'; ?>
+                            <button class="like-btn" style="font-size:1.5rem;" data-post-id="<?php echo $post->getId(); ?>">
+                                <a href="index.php?c=like&toggle&post=<?php echo $post->getId(); ?>">
+                                    <?php echo $post->getLikes()->getUserHasLiked() ? '♥' : '♡'; ?>
+                                </a>
                             </button>
                         </div>
-                        <p><?php echo $post->getLikes()->getTotalLikes(); ?> likes</p>
+                        <p>
+                            <?php echo $post->getLikes()->getTotalLikes(); ?> likes
+                        </p>
                         <div class="post-comments">
                             <?php foreach ($post->getComments() as $comment): ?>
                                 <p>
                                     <strong><?php echo $comment->getAuthor()->getUsername(); ?></strong>
-                                    <?php echo $comment->getComment(); ?>
+                                    <?php echo htmlspecialchars($comment->getComment()); ?>
+                                    <?php $commentLikes = $comment->getLikes(); ?>
+                                    <a href="index.php?c=like&toggleComment&comment=<?php echo $comment->getId(); ?>">
+                                        <?php echo $commentLikes->getUserHasLiked() ? '♥' : '♡'; ?>
+                                    </a>
+                                    <small><?php echo $commentLikes->getTotalLikes(); ?></small>
                                 </p>
                             <?php endforeach; ?>
                         </div>
+                        <form class="comment-form" action="index.php?c=comment&add" method="post">
+                            <input type="hidden" name="post_id" value="<?php echo $post->getId(); ?>">
+                            <input type="text" name="comment" placeholder="Escribe un comentario..." maxlength="500" required>
+                            <button type="submit">Comentar</button>
+                        </form>
                     </div>
                 <?php endforeach; ?>
             </div>

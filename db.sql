@@ -53,6 +53,20 @@ CREATE TABLE IF NOT EXISTS likes(
         ON UPDATE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS comment_likes(
+    comment_id INT NOT NULL,
+    user_id INT NOT NULL,
+    PRIMARY KEY (comment_id, user_id),
+    CONSTRAINT fk_comment_like_comment
+        FOREIGN KEY (comment_id) REFERENCES comments(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_comment_like_user
+        FOREIGN KEY (user_id) REFERENCES users(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
 INSERT INTO users (username, email, password, rol) VALUES 
 ('admin', 'admin@gmail.com', '21232f297a57a5a743894a0e4a801fc3', 'admin'),
 ('alex', 'alex@gmail.com', '534b44a19bf18d20b71ecc4eb77c572f', 'user');

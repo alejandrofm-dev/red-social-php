@@ -27,6 +27,10 @@ class Comment
     {
         return $this->comment;
     }
+    public function getLikes(): Like
+    {
+        return LikeRepository::getLikesByCommentId($this->id);
+    }
     public function getCreatedAt(): string
     {
         return $this->createdAt;

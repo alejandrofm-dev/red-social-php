@@ -5,11 +5,16 @@ class FileHelper
 
     public static function uploadFile($origin, $imageName, $name)
     {
-        $filename = explode(".", $imageName);
-        $extension = $filename[1];
-        if (move_uploaded_file($origin, self::$folder . $name . "." . $extension))
-            return $name . "." . $extension;
+        $extension = pathinfo($imageName, PATHINFO_EXTENSION);
+        $newName = $name . "-" . $imageName;
+        if (move_uploaded_file($origin, self::$folder . $newName))
+            return $newName;
 
         return false;
+    }
+
+    public static function getImageUrlByName($name): string
+    {
+        return self::$folder . $name;
     }
 }

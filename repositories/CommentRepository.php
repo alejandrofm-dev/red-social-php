@@ -14,4 +14,12 @@ class CommentRepository
         }
         return $comments;
     }
+
+    public static function addComment(int $postId, int $userId, string $comment): void
+    {
+        $db = DB::connect();
+        $stmt = $db->prepare("INSERT INTO comments (post_id, user_id, comment) VALUES (?, ?, ?)");
+        $stmt->bind_param("iis", $postId, $userId, $comment);
+        $stmt->execute();
+    }
 }
